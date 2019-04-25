@@ -1,0 +1,11 @@
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\obj\x86\Debug\Steganography.Steganography.resources
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\obj\x86\Debug\LsbProposedMethod.Properties.Resources.resources
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\obj\x86\Debug\LsbProposedMethod.csproj.GenerateResource.cache
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\obj\x86\Debug\LsbProposedMethod.csproj.CoreCompileInputs.cache
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\bin\Debug\Resources\empty-image.png
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\bin\Debug\LsbProposedMethod.exe.config
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\bin\Debug\LsbProposedMethod.exe
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\bin\Debug\LsbProposedMethod.pdb
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\obj\x86\Debug\LsbProposedMethod.exe
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\obj\x86\Debug\LsbProposedMethod.pdb
+D:\Chuyennganh\University\Chuyên ngành\Đồ án\source code\LSB Proposed Method\Steganography\obj\x86\Debug\LsbProposedMethod.csprojAssemblyReference.cache
