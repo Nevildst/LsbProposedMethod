@@ -62,22 +62,27 @@ namespace Steganography
                 return string.Empty;
             }
 
-            int ivector = 0;
+            int ivector = 0, lVector = vector.Count;
             for (int i = 0; i < image.Width; i++)
             {
                 for (int j = 0; j < image.Height; j++)
                 {
                     Color pxl = image.GetPixel(i, j);
 
-                    tmp += Get2BitHidden(pxl.R, vector[ivector++]) 
-                           + Get2BitHidden(pxl.G, vector[ivector++]) 
-                           + Get2BitHidden(pxl.B, vector[ivector++]);
+                    if (ivector >= lVector)
+                        return result;
+
+                    int ihiddenInR = (ivector + 1 > lVector) ? 4 : vector[ivector++];
+                    int ihiddenInG = (ivector + 1 > lVector) ? 4 : vector[ivector++];
+                    int ihiddenInB = (ivector + 1 > lVector) ? 4 : vector[ivector++];
+
+                    tmp += Get2BitHidden(pxl.R, ihiddenInR) 
+                         + Get2BitHidden(pxl.G, ihiddenInG) 
+                         + Get2BitHidden(pxl.B, ihiddenInB);
 
                     if (tmp.Length >= 16)
                     {
                         string sub = tmp.Substring(0, 16);
-                        if (sub == "0000000000000000")
-                            return result;
 
                         char c1 = (char)Convert.ToByte(sub.Substring(0, 8), 2);
                         char c2 = (char)Convert.ToByte(sub.Substring(8, 8), 2);
