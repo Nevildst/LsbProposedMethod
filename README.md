@@ -4,4 +4,4 @@
   - AES Encryption: https://github.com/Digiex/MCLauncher.NET/blob/master/MCLauncher.net/Crypto.cs
 
 ## Information 
-<img src="https://i.imgur.com/PotJUug.png" width="520px" height="450px">
+<img src="https://i.imgur.com/DgRPKF6.png" width="520px" height="450px">
