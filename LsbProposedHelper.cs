@@ -9,6 +9,8 @@ namespace Steganography
 {
     public class LsbProposedHelper
     {
+        public static List<int> Vector { get; set; } = new List<int>();
+
         public static Bitmap EmbedText(string encodeMessage, Bitmap bitmap)
         {
             if (bitmap == null || encodeMessage == "")
@@ -51,22 +53,36 @@ namespace Steganography
             return bitmap;
         }
 
-        public static string ExtractText(Bitmap image)
+        public static string ExtractText(Bitmap image, List<int> vector)
         {
             string result = "", tmp = "";
 
+            if(vector.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            int ivector = 0, lVector = vector.Count;
             for (int i = 0; i < image.Width; i++)
             {
                 for (int j = 0; j < image.Height; j++)
                 {
                     Color pxl = image.GetPixel(i, j);
 
-                    tmp += Get2BitRightMost(pxl.R) + Get2BitRightMost(pxl.G) + Get2BitRightMost(pxl.B);
+                    if (ivector >= lVector)
+                        return result;
+
+                    int ihiddenInR = (ivector + 1 > lVector) ? 4 : vector[ivector++];
+                    int ihiddenInG = (ivector + 1 > lVector) ? 4 : vector[ivector++];
+                    int ihiddenInB = (ivector + 1 > lVector) ? 4 : vector[ivector++];
+
+                    tmp += Get2BitHidden(pxl.R, ihiddenInR) 
+                         + Get2BitHidden(pxl.G, ihiddenInG) 
+                         + Get2BitHidden(pxl.B, ihiddenInB);
+
                     if (tmp.Length >= 16)
                     {
                         string sub = tmp.Substring(0, 16);
-                        if (sub == "0000000000000000")
-                            return result;
 
                         char c1 = (char)Convert.ToByte(sub.Substring(0, 8), 2);
                         char c2 = (char)Convert.ToByte(sub.Substring(8, 8), 2);
@@ -85,7 +101,26 @@ namespace Steganography
             string tmp = Convert.ToString(b, 2).PadLeft(8, '0');
             if (ibitSeq < msg.Length)
             {
-                tmp = tmp.Substring(0, 6) + msg.Substring(ibitSeq, 2);
+                if(tmp.Substring(0, 2) == msg.Substring(ibitSeq, 2))
+                {
+                    tmp = msg.Substring(ibitSeq, 2) + tmp.Substring(2, 6);
+                    Vector.Add(1);
+                }
+                else if(tmp.Substring(2, 2) == msg.Substring(ibitSeq, 2))
+                {
+                    tmp = tmp.Substring(0, 2) + msg.Substring(ibitSeq, 2) + tmp.Substring(4, 4);
+                    Vector.Add(2);
+                }
+                else if(tmp.Substring(4, 2) == msg.Substring(ibitSeq, 2))
+                {
+                    tmp = tmp.Substring(0, 4) + msg.Substring(ibitSeq, 2) + tmp.Substring(6, 2);
+                    Vector.Add(3);
+                }
+                else
+                {
+                    tmp = tmp.Substring(0, 6) + msg.Substring(ibitSeq, 2);
+                    Vector.Add(4);
+                }
             }
             else
             {
@@ -97,9 +132,25 @@ namespace Steganography
             return Convert.ToByte(tmp, 2);
         }
 
-        private static string Get2BitRightMost(byte b)
+        private static string Get2BitHidden(byte b, int ipixelElement)
         {
-            return Convert.ToString(b, 2).PadLeft(8, '0').Substring(6, 2);
+            string result = "";
+            switch (ipixelElement)
+            {
+                case 1:
+                    result = Convert.ToString(b, 2).PadLeft(8, '0').Substring(0, 2);
+                    break;
+                case 2:
+                    result = Convert.ToString(b, 2).PadLeft(8, '0').Substring(2, 2);
+                    break;
+                case 3:
+                    result = Convert.ToString(b, 2).PadLeft(8, '0').Substring(4, 2);
+                    break;
+                case 4:
+                    result = Convert.ToString(b, 2).PadLeft(8, '0').Substring(6, 2);
+                    break;
+            }
+            return result;
         }
 
         private static string GetBitSequence(string encodeMessage)
@@ -109,6 +160,11 @@ namespace Steganography
                 msg += Convert.ToString((int)ch, 2).PadLeft(8, '0');
 
             return msg;
+        }
+        
+        public static void ResetVector()
+        {
+            Vector = new List<int>();
         }
     }
 }
