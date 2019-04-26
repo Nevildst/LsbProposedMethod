@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
@@ -146,6 +146,7 @@ namespace Steganography
 
             encryptCheckBox.Checked = false;
             pathVectorTextBox.Text = string.Empty;
+            LsbProposedHelper.ResetVector();
 
             notesLabel.Text = "Notes:";
             notesLabel.ForeColor = Color.Black;
@@ -184,6 +185,7 @@ namespace Steganography
                         break;
                 }
 
+                LsbProposedHelper.ResetVector();
                 notesLabel.Text = "Notes:";
                 notesLabel.ForeColor = Color.Black;
             }

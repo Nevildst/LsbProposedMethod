@@ -62,7 +62,7 @@
             // embedButton
             // 
             this.embedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.embedButton.Location = new System.Drawing.Point(584, 649);
+            this.embedButton.Location = new System.Drawing.Point(584, 625);
             this.embedButton.Margin = new System.Windows.Forms.Padding(4);
             this.embedButton.Name = "embedButton";
             this.embedButton.Size = new System.Drawing.Size(175, 53);
@@ -85,7 +85,7 @@
             // extractButton
             // 
             this.extractButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.extractButton.Location = new System.Drawing.Point(767, 649);
+            this.extractButton.Location = new System.Drawing.Point(767, 625);
             this.extractButton.Margin = new System.Windows.Forms.Padding(4);
             this.extractButton.Name = "extractButton";
             this.extractButton.Size = new System.Drawing.Size(168, 53);
@@ -254,7 +254,7 @@
             // 
             this.notesLabel.AutoSize = true;
             this.notesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.notesLabel.Location = new System.Drawing.Point(8, 680);
+            this.notesLabel.Location = new System.Drawing.Point(8, 694);
             this.notesLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.notesLabel.Name = "notesLabel";
             this.notesLabel.Size = new System.Drawing.Size(69, 25);
@@ -273,7 +273,7 @@
             // importVectorButton
             // 
             this.importVectorButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.importVectorButton.Location = new System.Drawing.Point(418, 36);
+            this.importVectorButton.Location = new System.Drawing.Point(415, 40);
             this.importVectorButton.Name = "importVectorButton";
             this.importVectorButton.Size = new System.Drawing.Size(137, 50);
             this.importVectorButton.TabIndex = 0;
@@ -283,7 +283,8 @@
             // 
             // pathVectorTextBox
             // 
-            this.pathVectorTextBox.Location = new System.Drawing.Point(8, 36);
+            this.pathVectorTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pathVectorTextBox.Location = new System.Drawing.Point(11, 40);
             this.pathVectorTextBox.Multiline = true;
             this.pathVectorTextBox.Name = "pathVectorTextBox";
             this.pathVectorTextBox.Size = new System.Drawing.Size(391, 50);
@@ -296,7 +297,7 @@
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(12, 568);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(566, 106);
+            this.groupBox2.Size = new System.Drawing.Size(566, 110);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Vector";
@@ -305,7 +306,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(948, 715);
+            this.ClientSize = new System.Drawing.Size(948, 727);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.notesLabel);
