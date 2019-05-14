@@ -33,9 +33,9 @@ namespace Steganography
                 {
                     Color pixel = bitmap.GetPixel(i, j);
 
-                    int r = Embed2Bit(pixel.R, ref bitSeq, ref ibitSeq);
-                    int g = Embed2Bit(pixel.G, ref bitSeq, ref ibitSeq);
-                    int b = Embed2Bit(pixel.B, ref bitSeq, ref ibitSeq);
+                    int r = Embed2Bit(pixel.R, TypeElementPixel.Red, ref bitSeq, ref ibitSeq);
+                    int g = Embed2Bit(pixel.G, TypeElementPixel.Green, ref bitSeq, ref ibitSeq);
+                    int b = Embed2Bit(pixel.B, TypeElementPixel.Blue, ref bitSeq, ref ibitSeq);
 
                     bitmap.SetPixel(i, j, Color.FromArgb(r, g, b));
 
@@ -96,7 +96,7 @@ namespace Steganography
             return result;
         }
 
-        private static int Embed2Bit(byte b, ref string msg, ref int ibitSeq)
+        private static int Embed2Bit(byte b, TypeElementPixel type, ref string msg, ref int ibitSeq)
         {
             string tmp = Convert.ToString(b, 2).PadLeft(8, '0');
             if (ibitSeq < msg.Length)
@@ -105,21 +105,29 @@ namespace Steganography
                 {
                     tmp = msg.Substring(ibitSeq, 2) + tmp.Substring(2, 6);
                     Vector.Add(1);
+
+                    InforAnalysisEmbed.Instance.IncreaseValue(type, true);
                 }
                 else if(tmp.Substring(2, 2) == msg.Substring(ibitSeq, 2))
                 {
                     tmp = tmp.Substring(0, 2) + msg.Substring(ibitSeq, 2) + tmp.Substring(4, 4);
                     Vector.Add(2);
+
+                    InforAnalysisEmbed.Instance.IncreaseValue(type, true);
                 }
                 else if(tmp.Substring(4, 2) == msg.Substring(ibitSeq, 2))
                 {
                     tmp = tmp.Substring(0, 4) + msg.Substring(ibitSeq, 2) + tmp.Substring(6, 2);
                     Vector.Add(3);
+
+                    InforAnalysisEmbed.Instance.IncreaseValue(type, true);
                 }
                 else
                 {
                     tmp = tmp.Substring(0, 6) + msg.Substring(ibitSeq, 2);
                     Vector.Add(4);
+
+                    InforAnalysisEmbed.Instance.IncreaseValue(type);
                 }
             }
             else
