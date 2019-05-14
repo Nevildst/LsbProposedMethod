@@ -173,7 +173,7 @@ namespace Steganography
                         break;
                     case 1:
                         {
-                            bmp.Save(save_dialog.FileName, ImageFormat.Bmp);
+                            bmp.Save(save_dialog.FileName, ImageFormat.Png);
                             SaveVector(save_dialog);
                         }
                         break;
