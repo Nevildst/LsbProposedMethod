@@ -18,7 +18,7 @@ namespace Steganography
 
         public static InforAnalysisEmbed Instance => _instance;
 
-        private Dictionary<TypeElementPixel, ResultAnalysis> Result { set; get; } = new Dictionary<TypeElementPixel, ResultAnalysis> {
+        public Dictionary<TypeElementPixel, ResultAnalysis> Result { set; get; } = new Dictionary<TypeElementPixel, ResultAnalysis> {
             { TypeElementPixel.Red, new ResultAnalysis() },
             { TypeElementPixel.Green, new ResultAnalysis()},
             { TypeElementPixel.Blue, new ResultAnalysis()}
@@ -55,8 +55,8 @@ namespace Steganography
     {
         public double Identical { get; set; }
         public double NoIdentical { get; set; }
-        public int RatioIDT => (Identical == 0) ? 0 : (int)Math.Round(Identical / (Identical + NoIdentical));
-        public int RatioNoIDT => (NoIdentical == 0) ? 0 : (int)Math.Round(NoIdentical / (Identical + NoIdentical));
+        public int RatioIDT => (Identical == 0) ? 0 : (int)Math.Floor((Identical / (Identical + NoIdentical))*100);
+        public int RatioNoIDT => (NoIdentical == 0) ? 0 : (int)Math.Floor((NoIdentical / (Identical + NoIdentical))*100);
         public int NetRatio => RatioIDT + RatioNoIDT;
     }
 }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Generic;
+using OfficeOpenXml;
 
 namespace Steganography
 {
@@ -13,6 +14,8 @@ namespace Steganography
     {
         private Bitmap bmp = null;
         public const string EMPTY_IMAGE = @"Resources\empty-image.png";
+        public const string EMPTY_EXCEL = @"Resources\analysis.xlsx";
+        public Dictionary<TypeElementPixel, ResultAnalysis> AnalysisData => InforAnalysisEmbed.Instance.Result;
 
         public Steganography()
         {
@@ -93,7 +96,7 @@ namespace Steganography
         private void imageToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             OpenFileDialog open_dialog = new OpenFileDialog();
-            open_dialog.Filter = "Image Files (*.jpeg; *.png; *.bmp)|*.jpg; *.png; *.bmp";
+            open_dialog.Filter = "Image Files (*.jpg; *.jpeg; *.png; *.bmp)|*.jpg; *.jpeg; *.png; *.bmp";
 
             if (open_dialog.ShowDialog() == DialogResult.OK)
             {
@@ -152,6 +155,8 @@ namespace Steganography
             notesLabel.ForeColor = Color.Black;
 
             progressBar1.Value = 0;
+
+            InforAnalysisEmbed.Instance.ResetResult();
         }
 
         private void SaveImageAfterEmbed()
@@ -268,6 +273,71 @@ namespace Steganography
             {
                 pathVectorTextBox.Text = Path.GetFullPath(open_dialog.FileName);
             }
+        }
+
+        private void exportFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog
+            {
+                Filter = "Excel Worksheets|*.xlsx"
+            };
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, EMPTY_EXCEL);
+                using (var excelPkg = new ExcelPackage(new FileInfo(path)))
+                {
+                    SetDataForReport(excelPkg);
+
+                    using (FileStream fs = new FileStream(saveDialog.FileName, FileMode.Create))
+                    {
+                        excelPkg.SaveAs(fs);
+                    }
+                }
+            }
+        }
+
+        private void SetDataForReport(ExcelPackage excelPkg)
+        {
+            //TODO: set data analysis for excel file
+            var ws = excelPkg.Workbook.Worksheets[1];
+            double sumIDT = 0, sumNoIDT = 0;
+            if (AnalysisData.TryGetValue(TypeElementPixel.Red, out ResultAnalysis clrRed))
+            {
+                ws.Cells[2, 2].Value = clrRed.Identical;
+                ws.Cells[2, 3].Value = clrRed.NoIdentical;
+                ws.Cells[2, 4].Value = $"{clrRed.RatioIDT}%";
+                ws.Cells[2, 5].Value = $"{clrRed.RatioNoIDT}%";
+                ws.Cells[2, 6].Value = $"{clrRed.NetRatio}%";
+
+                sumIDT += clrRed.Identical;
+                sumNoIDT += clrRed.NoIdentical;
+            }
+            if (AnalysisData.TryGetValue(TypeElementPixel.Green, out ResultAnalysis clrGreen))
+            {
+                ws.Cells[3, 2].Value = clrGreen.Identical;
+                ws.Cells[3, 3].Value = clrGreen.NoIdentical;
+                ws.Cells[3, 4].Value = $"{clrGreen.RatioIDT}%";
+                ws.Cells[3, 5].Value = $"{clrGreen.RatioNoIDT}%";
+                ws.Cells[3, 6].Value = $"{clrGreen.NetRatio}%";
+
+                sumIDT += clrGreen.Identical;
+                sumNoIDT += clrGreen.NoIdentical;
+            }
+            if (AnalysisData.TryGetValue(TypeElementPixel.Blue, out ResultAnalysis clrBlue))
+            {
+                ws.Cells[4, 2].Value = clrBlue.Identical;
+                ws.Cells[4, 3].Value = clrBlue.NoIdentical;
+                ws.Cells[4, 4].Value = $"{clrBlue.RatioIDT}%";
+                ws.Cells[4, 5].Value = $"{clrBlue.RatioNoIDT}%";
+                ws.Cells[4, 6].Value = $"{clrBlue.NetRatio}%";
+
+                sumIDT += clrBlue.Identical;
+                sumNoIDT += clrBlue.NoIdentical;
+            }
+
+            ws.Cells[5, 2].Value = sumIDT;
+            ws.Cells[5, 3].Value = sumNoIDT;
         }
     }
 }
