@@ -20,6 +20,7 @@ namespace Steganography
         public Steganography()
         {
             InitializeComponent();
+            Control.CheckForIllegalCrossThreadCalls = false;
         }
 
         private async void embedButton_Click(object sender, EventArgs e)
@@ -49,21 +50,30 @@ namespace Steganography
                 }
             }
 
-            await UpdateWorkOnProgessiveBar();
-            bmp = LsbProposedHelper.EmbedText(text, bmp);
-
-            DialogResult dialogResult = MessageBox.Show("Do you want to save the image ?", "Embed Text Successfully!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if(dialogResult == DialogResult.Yes)
+            new Thread(() =>
             {
-                SaveImageAfterEmbed();
-            }
-            else
-            {
-                notesLabel.Text = "Notes: don't forget to save your new image.";
-                notesLabel.ForeColor = Color.OrangeRed;
-            }
+                bmp = LsbProposedHelper.EmbedText(text, bmp);
+                progressBar1.Value = 0;
 
-            progressBar1.Value = 0;
+                DialogResult dialogResult = MessageBox.Show("Do you want to save the image ?", "Embed Text Successfully!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Invoke((Action)(() =>
+                    {
+                        SaveImageAfterEmbed();
+                    }));
+                }
+                else
+                {
+                    notesLabel.Text = "Notes: don't forget to save your new image.";
+                    notesLabel.ForeColor = Color.OrangeRed;
+                }
+            })
+            {
+                IsBackground = true
+            }.Start();
+
+            await UpdateWorkOnProgessiveBar(text.Length);
         }
 
         private async void extractButton_Click(object sender, EventArgs e)
@@ -246,21 +256,24 @@ namespace Steganography
             }
         }
 
-        private async Task UpdateWorkOnProgessiveBar()
+        private async Task UpdateWorkOnProgessiveBar(int numb = 0)
         {
             progressBar1.Maximum = 100;
             progressBar1.Step = 1;
 
+            int timeSleep = 25 * numb / 400;
             var progress = new Progress<int>(v =>
             {
                 progressBar1.Value = v;
                 if (v % 10 == 0)
                 {
-                    //cú lừa =)))
-                    Thread.Sleep(25);
+                    if (timeSleep == 0)
+                        Thread.Sleep(25);
+                    else
+                        Thread.Sleep(timeSleep);
                 }
             });
-            
+
             await Task.Run(() => DoWork(progress));
         }
 
