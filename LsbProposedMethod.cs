@@ -23,7 +23,7 @@ namespace Steganography
             Control.CheckForIllegalCrossThreadCalls = false;
         }
 
-        private async void embedButton_Click(object sender, EventArgs e)
+        private void embedButton_Click(object sender, EventArgs e)
         {
             bmp = (Bitmap)imagePictureBox.Image;
 
@@ -53,7 +53,7 @@ namespace Steganography
             new Thread(() =>
             {
                 bmp = LsbProposedHelper.EmbedText(text, bmp);
-                progressBar1.Value = 0;
+                //progressBar1.Value = 0;
 
                 DialogResult dialogResult = MessageBox.Show("Do you want to save the image ?", "Embed Text Successfully!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
@@ -73,13 +73,18 @@ namespace Steganography
                 IsBackground = true
             }.Start();
 
-            await UpdateWorkOnProgessiveBar(text.Length);
+            //await UpdateWorkOnProgessiveBar(text.Length);
         }
 
         private async void extractButton_Click(object sender, EventArgs e)
         {
             bmp = (Bitmap)imagePictureBox.Image;
 
+            if (string.IsNullOrWhiteSpace(pathVectorTextBox.Text))
+            {
+                MessageBox.Show("Vector not found", $"Error");
+                return;
+            }
             var vector = ReadVector(pathVectorTextBox.Text);
                     
             await UpdateWorkOnProgessiveBar();
@@ -91,9 +96,9 @@ namespace Steganography
                 {
                     extractedText = Crypto.DecryptStringAES(extractedText, passwordTextBox.Text);
                 }
-                catch
+                catch(Exception ex)
                 {
-                    MessageBox.Show("Wrong password", "Error");
+                    MessageBox.Show($"{ex.ToString()}", "Error");
 
                     return;
                 }
