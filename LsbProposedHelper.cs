@@ -39,7 +39,7 @@ namespace Steganography
 
                     bitmap.SetPixel(i, j, Color.FromArgb(r, g, b));
 
-                    if (ibitSeq == bitSeq.Length + 8)
+                    if (ibitSeq == bitSeq.Length)
                     {
                         isDone = true;
                         break;
@@ -57,7 +57,7 @@ namespace Steganography
         {
             string result = "", tmp = "";
 
-            if(vector.Count == 0)
+            if (vector.Count == 0)
             {
                 return string.Empty;
             }
@@ -76,19 +76,18 @@ namespace Steganography
                     int ihiddenInG = (ivector + 1 > lVector) ? 4 : vector[ivector++];
                     int ihiddenInB = (ivector + 1 > lVector) ? 4 : vector[ivector++];
 
-                    tmp += Get2BitHidden(pxl.R, ihiddenInR) 
-                         + Get2BitHidden(pxl.G, ihiddenInG) 
+                    tmp += Get2BitHidden(pxl.R, ihiddenInR)
+                         + Get2BitHidden(pxl.G, ihiddenInG)
                          + Get2BitHidden(pxl.B, ihiddenInB);
 
-                    if (tmp.Length >= 16)
+                    if (tmp.Length >= 8)
                     {
-                        string sub = tmp.Substring(0, 16);
+                        string sub = tmp.Substring(0, 8);
 
                         char c1 = (char)Convert.ToByte(sub.Substring(0, 8), 2);
-                        char c2 = (char)Convert.ToByte(sub.Substring(8, 8), 2);
-                        result += $"{c1}{c2}";
+                        result += $"{c1}";
 
-                        tmp = tmp.Substring(16, tmp.Length - 16);
+                        tmp = tmp.Substring(8, tmp.Length - 8);
                     }
                 }
             }
@@ -99,41 +98,38 @@ namespace Steganography
         private static int Embed2Bit(byte b, TypeElementPixel type, ref string msg, ref int ibitSeq)
         {
             string tmp = Convert.ToString(b, 2).PadLeft(8, '0');
-            if (ibitSeq < msg.Length)
+            var subString = msg.Substring(ibitSeq, 2);
+
+            if (tmp.Substring(0, 2) == subString)
             {
-                if(tmp.Substring(0, 2) == msg.Substring(ibitSeq, 2))
+                Vector.Add(1);
+                InforAnalysisEmbed.Instance.IncreaseValue(type, true);
+            }
+            else if (tmp.Substring(2, 2) == subString)
+            {
+                Vector.Add(2);
+                InforAnalysisEmbed.Instance.IncreaseValue(type, true);
+            }
+            else if (tmp.Substring(4, 2) == subString)
+            {
+                Vector.Add(3);
+                InforAnalysisEmbed.Instance.IncreaseValue(type, true);
+            }
+            else
+            {
+                if (tmp.Substring(6, 2) == subString)
                 {
-                    tmp = msg.Substring(ibitSeq, 2) + tmp.Substring(2, 6);
-                    Vector.Add(1);
-
-                    InforAnalysisEmbed.Instance.IncreaseValue(type, true);
-                }
-                else if(tmp.Substring(2, 2) == msg.Substring(ibitSeq, 2))
-                {
-                    tmp = tmp.Substring(0, 2) + msg.Substring(ibitSeq, 2) + tmp.Substring(4, 4);
-                    Vector.Add(2);
-
-                    InforAnalysisEmbed.Instance.IncreaseValue(type, true);
-                }
-                else if(tmp.Substring(4, 2) == msg.Substring(ibitSeq, 2))
-                {
-                    tmp = tmp.Substring(0, 4) + msg.Substring(ibitSeq, 2) + tmp.Substring(6, 2);
-                    Vector.Add(3);
-
                     InforAnalysisEmbed.Instance.IncreaseValue(type, true);
                 }
                 else
                 {
-                    tmp = tmp.Substring(0, 6) + msg.Substring(ibitSeq, 2);
-                    Vector.Add(4);
-
                     InforAnalysisEmbed.Instance.IncreaseValue(type);
                 }
+
+                tmp = tmp.Substring(0, 6) + subString;
+                Vector.Add(4);
             }
-            else
-            {
-                tmp = tmp.Substring(0, 6) + "00";
-            }
+
 
             ibitSeq += 2;
 
@@ -169,7 +165,7 @@ namespace Steganography
 
             return msg;
         }
-        
+
         public static void ResetVector()
         {
             Vector = new List<int>();

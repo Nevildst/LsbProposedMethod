@@ -322,40 +322,40 @@ namespace Steganography
             double sumIDT = 0, sumNoIDT = 0;
             if (AnalysisData.TryGetValue(TypeElementPixel.Red, out ResultAnalysis clrRed))
             {
-                ws.Cells[2, 2].Value = clrRed.Identical;
-                ws.Cells[2, 3].Value = clrRed.NoIdentical;
-                ws.Cells[2, 4].Value = $"{clrRed.RatioIDT}%";
-                ws.Cells[2, 5].Value = $"{clrRed.RatioNoIDT}%";
-                ws.Cells[2, 6].Value = $"{clrRed.NetRatio}%";
+                ws.Cells[3, 2].Value = clrRed.Identical;
+                ws.Cells[3, 3].Value = clrRed.NoIdentical;
+                ws.Cells[3, 4].Value = $"{clrRed.RatioIDT}%";
+                ws.Cells[3, 5].Value = $"{clrRed.RatioNoIDT}%";
+                ws.Cells[3, 6].Value = $"{clrRed.NetRatio}%";
 
                 sumIDT += clrRed.Identical;
                 sumNoIDT += clrRed.NoIdentical;
             }
             if (AnalysisData.TryGetValue(TypeElementPixel.Green, out ResultAnalysis clrGreen))
             {
-                ws.Cells[3, 2].Value = clrGreen.Identical;
-                ws.Cells[3, 3].Value = clrGreen.NoIdentical;
-                ws.Cells[3, 4].Value = $"{clrGreen.RatioIDT}%";
-                ws.Cells[3, 5].Value = $"{clrGreen.RatioNoIDT}%";
-                ws.Cells[3, 6].Value = $"{clrGreen.NetRatio}%";
+                ws.Cells[4, 2].Value = clrGreen.Identical;
+                ws.Cells[4, 3].Value = clrGreen.NoIdentical;
+                ws.Cells[4, 4].Value = $"{clrGreen.RatioIDT}%";
+                ws.Cells[4, 5].Value = $"{clrGreen.RatioNoIDT}%";
+                ws.Cells[4, 6].Value = $"{clrGreen.NetRatio}%";
 
                 sumIDT += clrGreen.Identical;
                 sumNoIDT += clrGreen.NoIdentical;
             }
             if (AnalysisData.TryGetValue(TypeElementPixel.Blue, out ResultAnalysis clrBlue))
             {
-                ws.Cells[4, 2].Value = clrBlue.Identical;
-                ws.Cells[4, 3].Value = clrBlue.NoIdentical;
-                ws.Cells[4, 4].Value = $"{clrBlue.RatioIDT}%";
-                ws.Cells[4, 5].Value = $"{clrBlue.RatioNoIDT}%";
-                ws.Cells[4, 6].Value = $"{clrBlue.NetRatio}%";
+                ws.Cells[5, 2].Value = clrBlue.Identical;
+                ws.Cells[5, 3].Value = clrBlue.NoIdentical;
+                ws.Cells[5, 4].Value = $"{clrBlue.RatioIDT}%";
+                ws.Cells[5, 5].Value = $"{clrBlue.RatioNoIDT}%";
+                ws.Cells[5, 6].Value = $"{clrBlue.NetRatio}%";
 
                 sumIDT += clrBlue.Identical;
                 sumNoIDT += clrBlue.NoIdentical;
             }
 
-            ws.Cells[5, 2].Value = sumIDT;
-            ws.Cells[5, 3].Value = sumNoIDT;
+            ws.Cells[6, 2].Value = sumIDT;
+            ws.Cells[6, 3].Value = sumNoIDT;
         }
     }
 }

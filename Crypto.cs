@@ -3,9 +3,6 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 
-// resource:
-// https://github.com/Digiex/MCLauncher.NET/blob/master/MCLauncher.net/Crypto.cs
-
 namespace Steganography
 {
     public class Crypto
